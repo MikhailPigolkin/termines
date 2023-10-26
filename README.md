@@ -23,6 +23,7 @@ createdb guides
 localhost:8080/api/v1/download  
 метод POST  
 если через постман  
+  
 ![image](https://github.com/MikhailPigolkin/termines/assets/36242761/2c12f2d0-326f-4040-8147-f5afb27663ee)
 
 принимает текстовый файл (.txt) со строками:  
