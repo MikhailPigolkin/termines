@@ -24,7 +24,8 @@ localhost:8080/api/v1/download
 метод POST  
 если через постман  
   
-![image](https://github.com/MikhailPigolkin/termines/assets/36242761/2c12f2d0-326f-4040-8147-f5afb27663ee)
+![image](https://github.com/MikhailPigolkin/termines/assets/36242761/eace9488-4b75-4893-b2bd-ab447e90d7be)
+
 
 принимает текстовый файл (.txt) со строками:  
 на каждой строке <термин> <делимитер> <описание>  
