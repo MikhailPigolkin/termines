@@ -45,8 +45,7 @@ public class FileServiceImpl implements FileService{
 
     @Override
     public void saveToFile(FileEntity fileEntity, HttpServletResponse response) throws IOException {
-        String fileName = fileEntity.getFileName() + "_written.txt";
-        fileName = URLEncoder.encode(fileName, "UTF-8");
+        String fileName = "response.txt";
         File file = new File(fileName);
         PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
         List<Term> terms = new ArrayList<>(fileEntity.getTerms());
@@ -54,7 +53,7 @@ public class FileServiceImpl implements FileService{
         terms.forEach(t -> printWriter.println(t.getTerm() + "-" + t.getDescription()));
         printWriter.flush();
         InputStream is = new FileInputStream(file);
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+        response.setHeader("Content-disposition", "attachment; filename" + fileName);
         IOUtils.copy(is, response.getOutputStream());
         response.flushBuffer();
     }
