@@ -4,6 +4,7 @@ import com.example.termines.entity.FileEntity;
 import com.example.termines.entity.Term;
 import com.example.termines.repository.FileEntityRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,6 +20,7 @@ import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FileServiceImpl implements FileService{
 
     private final FileEntityRepository fileRepository;
@@ -43,17 +45,20 @@ public class FileServiceImpl implements FileService{
     }
 
     @Override
-    public void saveToFile(FileEntity fileEntity, HttpServletResponse response) throws IOException {
+    public void saveToFile(FileEntity fileEntity, HttpServletResponse response) {
         String fileName = "response.txt";
         File file = new File(fileName);
-        PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
-        List<Term> terms = new ArrayList<>(fileEntity.getTerms());
-        terms.sort((t1, t2) -> t1.getTerm().compareTo(t2.getTerm()));
-        terms.forEach(t -> printWriter.println(t.getTerm() + "-" + t.getDescription()));
-        printWriter.flush();
-        InputStream is = new FileInputStream(file);
-        response.setHeader("Content-disposition", "attachment; filename" + fileName);
-        IOUtils.copy(is, response.getOutputStream());
-        response.flushBuffer();
+        try(PrintWriter printWriter= new PrintWriter(new FileOutputStream(file));
+            InputStream is = new FileInputStream(file)){
+            List<Term> terms = new ArrayList<>(fileEntity.getTerms());
+            terms.sort((t1, t2) -> t1.getTerm().compareTo(t2.getTerm()));
+            terms.forEach(t -> printWriter.println(t.getTerm() + "-" + t.getDescription()));
+            printWriter.flush();
+            response.setHeader("Content-disposition", "attachment; filename" + fileName);
+            IOUtils.copy(is, response.getOutputStream());
+            response.flushBuffer();
+        }catch (IOException e){
+            log.error(e.getLocalizedMessage());
+        }
     }
 }
