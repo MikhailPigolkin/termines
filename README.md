@@ -1,5 +1,5 @@
 # termines
-Используется БД Posgres  
+Используется БД Postgres  
 инструкция по установке (Linux Ubuntu 22.04):  
   
 sudo apt update  
